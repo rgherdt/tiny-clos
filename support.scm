@@ -41,7 +41,7 @@
 ;
 ;
 (define what-scheme-implementation
-  'mzscheme
+  'gambit
  ;'mit
  ;'chez
  ;'scm
@@ -50,6 +50,8 @@
                     ; before loading this file, in order
                     ;for sort-list to be defined.
 
+
+(import (gambit))
 
 #|
 (case what-scheme-implementation
@@ -61,12 +63,13 @@
   (case what-scheme-implementation
     ((mit mzscheme)      (lambda (predicate list) (sort list predicate)))
     ((chez)     (lambda (predicate list) (sort predicate list)))
+    ((gambit)     (lambda (predicate list) (##list-sort predicate list)))
     ((scheme48) (lambda (predicate list) (sort-list predicate list)))
     ((scm)      (lambda (predicate list) (sort list predicate)))))
 
 
 
-(define simple-printer (lambda () barf))
+;;(define simple-printer (lambda () barf))
 
 
 
@@ -94,14 +97,6 @@
 (define map-append
     (lambda (proc . lists)
       (apply append (apply map (cons proc lists)))))
-
-(define last
-    (lambda (l)
-      (if (null? l)
-	  #f
-	  (if (null? (cdr l))
-	      (car l)
-	      (last (cdr l))))))
 
 (define every
     (lambda (test . lists)
